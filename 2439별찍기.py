@@ -9,10 +9,6 @@
 
 a =int(input())
 for len in range(1,a+1):
-    for i in range(a-len):
-        print(' ', end = '')
-    for j in range(len):
-        print('*', end='')
-    print('')
+    print(' '* (a-len) + '*'*len)
 
 
