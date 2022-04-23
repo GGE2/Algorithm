@@ -35,29 +35,44 @@ win_nums의 원소들은 정렬되어 있지 않을 수도 있습니다.
 """
 
 
-def solution(lottos, win_nums):
-    sorted_lottos = sorted(lottos)
-    sorted_win_nums = sorted(win_nums)
-    result = 0
-    answer = []
+def solution(numbers, hand):
+    answer = ""
+    current_num = 0
+    dic = {1: [0, 0], 2: [0, 1], 3: [0, 2],
+           4: [1, 0], 5: [1, 1], 6: [1, 2],
+           7: [2, 0], 8: [2, 1], 9: [2, 2],
+           '*': [3, 0], 0: [3, 1], '#': [3, 2]}
+    left = dic['*']
+    right = dic['#']
 
-    count_zero = [zero for zero in sorted_lottos if zero == 0]
+    for i in numbers:
+        current_num = dic[i]
 
-    for x in sorted_lottos:
-        for y in sorted_win_nums:
-            if x == y:
-                result += 1
+        if i in [1, 4, 7]:
+            answer += "L"
+            left = current_num
 
-    if result == 0:
-        if len(count_zero) == 0:
-            answer.append(6)
-            answer.append(6)
+        elif i in [3, 6, 9]:
+            answer += 'R'
+            right = current_num
         else:
-            answer.append(7 - result - len(count_zero))
-            answer.append(6)
-
-    else:
-        answer.append(7 - result - len(count_zero))
-        answer.append(7 - result)
+            left_dt = 0
+            right_dt = 0
+            for x, y, z in zip(left, right, current_num):
+                left_dt += abs(x - z)
+                right_dt += abs(y - z)
+            if left_dt > right_dt:
+                answer += 'R'
+                right = dic[i]
+            elif left_dt < right_dt:
+                answer += 'L'
+                left = dic[i]
+            else:
+                if hand == 'left':
+                    answer += 'L'
+                    left = dic[i]
+                else:
+                    answer += 'R'
+                    right = dic[i]
 
     return answer
