@@ -1,27 +1,35 @@
 '''
 문제
-알파벳 대소문자로 된 단어가 주어지면, 이 단어에서 가장 많이 사용된 알파벳이 무엇인지 알아내는 프로그램을 작성하시오. 단, 대문자와 소문자를 구분하지 않는다.
+예전에는 운영체제에서 크로아티아 알파벳을 입력할 수가 없었다. 따라서, 다음과 같이 크로아티아 알파벳을 변경해서 입력했다.
+
+크로아티아 알파벳	변경
+č	c=
+ć	c-
+dž	dz=
+đ	d-
+lj	lj
+nj	nj
+š	s=
+ž	z=
+예를 들어, ljes=njak은 크로아티아 알파벳 6개(lj, e, š, nj, a, k)로 이루어져 있다. 단어가 주어졌을 때, 몇 개의 크로아티아 알파벳으로 이루어져 있는지 출력한다.
+
+dž는 무조건 하나의 알파벳으로 쓰이고, d와 ž가 분리된 것으로 보지 않는다. lj와 nj도 마찬가지이다. 위 목록에 없는 알파벳은 한 글자씩 센다.
 
 입력
-첫째 줄에 알파벳 대소문자로 이루어진 단어가 주어진다. 주어지는 단어의 길이는 1,000,000을 넘지 않는다.
+첫째 줄에 최대 100글자의 단어가 주어진다. 알파벳 소문자와 '-', '='로만 이루어져 있다.
+
+단어는 크로아티아 알파벳으로 이루어져 있다. 문제 설명의 표에 나와있는 알파벳은 변경된 형태로 입력된다.
 
 출력
-첫째 줄에 이 단어에서 가장 많이 사용된 알파벳을 대문자로 출력한다. 단, 가장 많이 사용된 알파벳이 여러 개 존재하는 경우에는 ?를 출력한다.
+입력으로 주어진 단어가 몇 개의 크로아티아 알파벳으로 이루어져 있는지 출력한다.
 '''
 
 import sys
 
-_input = list(sys.stdin.readline().strip().upper())
-check_dict={x:0 for x in _input}
+cro_alpha = ['c=', 'c-', 'dz=', 'd-', 'lj', 'nj', 's=', 'z=']
+_input = sys.stdin.readline().strip()
 
-for index in _input:
-    check_dict[index]+=1
+for i in cro_alpha:
+    _input = _input.replace(i,'.')
 
-max_value = [k for k,v in check_dict.items() if max(check_dict.values())== v]
-
-
-if len(max_value)==1 :
-    print(''.join(max_value))
-else :
-    print('?')
-
+print(len(_input))
