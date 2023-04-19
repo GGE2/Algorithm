@@ -1,0 +1,25 @@
+import java.util.*;
+
+class Solution {
+    public int solution(int[][] sizes) {
+        int answer = 0;
+        
+        int mWidth = Integer.MIN_VALUE;
+        int mHeight = Integer.MIN_VALUE;
+                
+        
+        for(int i=0;i<sizes.length;i++){
+            int w = Math.max(sizes[i][0],sizes[i][1]);
+            int h = Math.min(sizes[i][0],sizes[i][1]);
+            
+            if(mWidth<w) mWidth = w;
+            if(mHeight<h) mHeight = h;
+            
+        }
+        
+        
+        
+        
+        return mWidth*mHeight;
+    }
+}
