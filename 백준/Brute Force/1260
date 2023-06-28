@@ -1,0 +1,71 @@
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+
+        Scanner sc = new Scanner(System.in);
+        int N = sc.nextInt();
+        int M = sc.nextInt();
+        int V = sc.nextInt();
+
+        boolean[] visited = new boolean[N+1];
+        LinkedList<Integer>[] list = new LinkedList[N+1];
+
+        for(int i=0;i<=N;i++){
+            list[i] = new LinkedList<Integer>();
+        }
+
+        for(int i=0;i<M;i++){
+            int v1 = sc.nextInt();
+            int v2 = sc.nextInt();
+            list[v1].add(v2);
+            list[v2].add(v1);
+        }
+
+        for(int i=1;i<=N;i++){
+            Collections.sort(list[i]);
+        }
+
+        dfs(V,list,visited);
+        Arrays.fill(visited,false);
+        System.out.println("");
+        bfs(V,list,visited);
+    }
+
+    public static void dfs(int V,LinkedList<Integer>[] li,boolean[] visited){
+        visited[V] = true;
+        System.out.print(V+" ");
+
+        Iterator<Integer> iterator = li[V].iterator();
+        while(iterator.hasNext()){
+            int next = iterator.next();
+            if(!visited[next])
+                dfs(next,li,visited);
+        }
+    }
+    public static void bfs(int v,LinkedList<Integer>[] li,boolean[] visited){
+        Queue<Integer>queue = new LinkedList<Integer>();
+        visited[v] = true;
+        queue.add(v);
+
+        while(queue.size()!=0){
+            v = queue.poll();
+            System.out.print(v+" ");
+            Iterator<Integer> it = li[v].listIterator();
+            while(it.hasNext()){
+                int w = it.next();
+                if(!visited[w]) {
+                    visited[w] = true;
+                    queue.add(w);
+                }
+            }
+
+
+        }
+
+    }
+}
