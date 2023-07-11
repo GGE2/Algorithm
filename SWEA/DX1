@@ -1,0 +1,59 @@
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+
+    static int T,N,M;
+    static int[][] manitos;
+    static int answer;
+
+    public static void main(String[] args) throws Exception{
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
+        T = Integer.parseInt(st.nextToken());
+
+        for(int tc=1;tc<=T;tc++){
+            st = new StringTokenizer(br.readLine());
+            N = Integer.parseInt(st.nextToken());
+            M = Integer.parseInt(st.nextToken());
+
+            manitos = new int[N+1][N+1];
+            answer = Integer.MAX_VALUE;
+
+
+            for(int i=0;i<M;i++){
+                st = new StringTokenizer(br.readLine());
+                int x = Integer.parseInt(st.nextToken());
+                int y = Integer.parseInt(st.nextToken());
+                int c = Integer.parseInt(st.nextToken());
+                manitos[x][y] = c;
+            }
+
+            for(int i=1;i<N+1;i++){
+                boolean[][] visited = new boolean[N+1][N+1];
+                dfs(i,i,0,visited);
+                if(answer==1) break;
+            }
+            int ans = (answer==Integer.MAX_VALUE)?-1:answer;
+            sb.append("#").append(tc).append(" ").append(ans).append('\n');
+        }
+        System.out.println(sb);
+    }
+    static void dfs(int start,int now,int cost,boolean[][] visited){
+        if(answer!=Integer.MAX_VALUE&&cost>=answer)
+            return ;
+        for(int i=1;i<N+1;i++){
+            if(!visited[now][i]&&manitos[now][i]!=0) {
+                visited[now][i] = true;
+                if(i==start) {
+                    answer = Math.min(answer, cost+manitos[now][i]);
+                    return ;
+                }
+                else
+                    dfs(start, i, cost + manitos[now][i], visited);
+            }
+        }
+    }
+}
