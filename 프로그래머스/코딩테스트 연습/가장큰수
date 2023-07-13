@@ -1,0 +1,36 @@
+import java.util.*;
+import java.io.*;
+
+class Solution {
+    static class Number implements Comparable<Number>{
+        String number;
+        
+        public Number(String number){
+            this.number = number;
+        }
+        public int compareTo(Number n){
+            int n1 = Integer.parseInt(this.number+n.number);
+            int n2 = Integer.parseInt(n.number+this.number);
+            return -(n1-n2);
+        }
+        
+    }
+    static int N;
+    public String solution(int[] numbers) {
+        String answer = "";
+        Number[] nums = new Number[numbers.length];
+        N = -1;
+        for(int i=0;i<numbers.length;i++){
+            N = Math.max(N,Integer.toString(numbers[i]).length());
+            nums[i] = new Number(Integer.toString(numbers[i]));
+        }
+        Arrays.sort(nums);
+        for(int i=0;i<nums.length;i++)
+            answer+=nums[i].number;
+        String check_zero="";
+        for(int i=0;i<numbers.length;i++)
+            check_zero+="0";
+        if(answer.equals(check_zero)) answer="0";
+        return answer;
+    }
+}
