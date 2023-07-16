@@ -1,0 +1,43 @@
+import java.util.*;
+import java.io.*;
+
+class Solution {
+    static class Truck{
+        int time;
+        int weight;
+        public Truck(int time,int weight){
+            this.time = time;
+            this.weight = weight;
+        }
+    }
+    public int solution(int bridge_length, int weight, int[] truck_weights) {
+        Queue<Integer> wait = new ArrayDeque<>();
+        Queue<Truck> execute = new ArrayDeque<>();
+        Queue<Integer> end = new ArrayDeque<>();
+        int answer = 1;
+        int now_weights = 0;
+        
+        for(int w : truck_weights){
+            wait.add(w);
+        }
+        while(true){
+            //나올수 있을때
+            if(!execute.isEmpty()&&answer-execute.peek().time==bridge_length){
+                Truck truck = execute.poll();
+                int now = truck.weight;
+                now_weights-=now;
+                end.add(now);
+            }
+            if(!wait.isEmpty()&&now_weights+wait.peek()<=weight && execute.size()+1<=bridge_length){
+                int now = wait.poll();
+                now_weights+=now;
+                execute.add(new Truck(answer,now));
+            }
+            if(end.size()==truck_weights.length)
+                break;
+            answer++;
+        }
+    
+        return answer;
+    }
+}
