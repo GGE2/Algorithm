@@ -1,0 +1,40 @@
+import java.util.*;
+import java.io.*;
+
+class Solution {
+    public int[] solution(int[] prices) {
+        int[] answer = new int[prices.length];
+        Stack<Integer> stack = new Stack<>();
+        
+        for(int time=0;time<prices.length;time++){
+            if(stack.isEmpty()) stack.push(time);
+            else{
+                if(prices[stack.peek()]>prices[time]){
+                    while(!stack.isEmpty()){
+                        int t = stack.peek();
+                        if(prices[t]>prices[time]){
+                            int pop = stack.pop();
+                            answer[pop] = time-pop;
+                        }else{
+                            stack.add(time);
+                            break;
+                        }
+                        if(stack.isEmpty()){
+                            stack.push(time);
+                            break;
+                        }
+                    }
+                }else{
+                    stack.push(time);
+                }
+            }
+        }
+        
+        while(!stack.isEmpty()){
+            int now = stack.pop();
+            answer[now] = prices.length-1-now;
+        }
+        
+        return answer;
+    }
+}
