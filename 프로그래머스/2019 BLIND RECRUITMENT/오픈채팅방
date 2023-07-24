@@ -1,0 +1,35 @@
+import java.util.*;
+import java.io.*;
+
+class Solution {
+    public String[] solution(String[] record) {
+        
+        Map<String,String> names = new HashMap<>();
+        
+        ArrayList<String> orders = new ArrayList<>();
+        for(String rec : record){
+            String[] str = rec.split(" ");
+            String type = str[0];
+            if(type.equals("Enter")||type.equals("Change")){
+                names.put(str[1],str[2]);
+            }
+            if(type.equals("Enter")||type.equals("Leave")){
+                orders.add(str[0]+" "+str[1]);
+            }
+        }
+        String[] answer = new String[orders.size()];
+        int idx = 0;
+        
+        for(String order:orders){
+            String[] o = order.split(" ");
+            if(o[0].equals("Enter")){
+                answer[idx] = names.get(o[1])+"님이 들어왔습니다.";
+            }else{
+                answer[idx] = names.get(o[1])+"님이 나갔습니다.";
+            }
+            idx++;
+        }
+        
+        return answer;
+    }
+}
