@@ -1,0 +1,55 @@
+import java.util.*;
+import java.io.*;
+
+
+class Solution {
+    
+    static int max_user,max_price;
+    static int[] discounts = {10,20,30,40};
+
+    public int[] solution(int[][] users, int[] emoticons) {
+        int[] answer = new int[2];
+        max_user=0;
+        max_price = 0;
+        permutation(new int[emoticons.length],0,users,emoticons);
+        
+        answer[0] = max_user;
+        answer[1] = max_price;
+        return answer;
+    }
+    
+    static void permutation(int[] output,int depth,int[][] users,int[] emoticons){
+        if(depth==emoticons.length){
+            solve(users,emoticons,output);
+            return ;
+        }
+        for(int i=0;i<4;i++){
+            output[depth] = discounts[i];
+            permutation(output,depth+1,users,emoticons);
+        }
+        
+    }
+    static void solve(int[][] users,int[] emoticons,int[] arr){
+        int count = 0;
+        int sum = 0;
+        
+        for(int[] user : users){
+            int t_sum = 0;
+            for(int i=0;i<emoticons.length;i++){
+                if(user[0]<=arr[i]){
+                    int res = emoticons[i] * (100-arr[i])/100;
+                    t_sum+=res;
+                    if(t_sum>=user[1]) break;
+                }
+            }
+            if(t_sum>=user[1]) count++;
+            else sum+=t_sum;
+        }
+        if(count>max_user){
+            max_user = count;
+            max_price = sum;
+        }else if(count==max_user){
+            max_price = Math.max(max_price,sum);
+        }
+    }
+}
