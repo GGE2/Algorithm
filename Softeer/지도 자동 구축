@@ -1,0 +1,20 @@
+import java.util.*;
+import java.io.*;
+
+
+public class Main
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+        
+        int N = sc.nextInt();
+
+        System.out.println((int)Math.pow(recursion(N),2));
+    }
+    static int recursion(int n){
+        if(n==1) return 3;
+        else return 2*recursion(n-1) - 1;
+
+    }
+}
