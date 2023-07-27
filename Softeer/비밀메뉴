@@ -1,0 +1,32 @@
+import java.util.*;
+import java.io.*;
+
+
+public class Main
+{
+    public static void main(String args[]) throws Exception
+    {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        String sb = "";
+        String ib = "";
+        int M = Integer.parseInt(st.nextToken());
+        int N = Integer.parseInt(st.nextToken());
+        int K = Integer.parseInt(st.nextToken());
+        
+        //비밀 메뉴 조작보다 사용자 버튼 조작이 짧은 경우
+        if(M>N) System.out.println("normal");
+        else{
+            st = new StringTokenizer(br.readLine());
+            for(int i=0;i<M;i++) sb+=st.nextToken()+"";
+            
+            st = new StringTokenizer(br.readLine());
+
+            for(int i=0;i<N;i++) ib+=String.valueOf(st.nextToken());
+
+            if(ib.contains(sb)) System.out.println("secret");
+            else System.out.println("normal");
+            
+        }
+    }
+}
