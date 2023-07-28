@@ -1,0 +1,21 @@
+import java.util.*;
+import java.io.*;
+import java.math.*;
+
+public class Main
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+        Long K = sc.nextLong();
+        Long P = sc.nextLong();
+        Long N = sc.nextLong();
+        
+
+        while(N-->0){
+            K*=P;
+            K%=1000000007;
+        }
+        System.out.println(K);
+    }
+}
