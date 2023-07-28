@@ -1,0 +1,45 @@
+import java.util.*;
+import java.io.*;
+
+
+public class Main
+{
+    static class Data{
+        int weight;
+        int price;
+        public Data(int weight,int price){
+            this.weight = weight;
+            this.price = price;
+        }
+    }
+    public static void main(String args[]) throws Exception
+    {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int W = Integer.parseInt(st.nextToken());
+        int N = Integer.parseInt(st.nextToken());
+        Data[] datas = new Data[N];
+
+        for(int i=0;i<N;i++){
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            datas[i] = new Data(a,b);
+        }
+        Arrays.sort(datas,(o1,o2)->{
+            return -(o1.price-o2.price);
+        });
+        int answer = 0;
+        for(int i=0;i<N;i++){
+            if(W>=datas[i].weight){
+                W-=datas[i].weight;
+                answer+=datas[i].weight*datas[i].price;
+            }
+            else{
+                answer+=datas[i].price * W;
+                break;
+            }
+        }   
+        System.out.println(answer);
+    }
+}
