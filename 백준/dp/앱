@@ -1,0 +1,55 @@
+import java.util.*;
+import java.io.*;
+
+
+class Main {
+
+    static int N,M;
+    static int[] bytes;
+    static int[] prices;
+    static int sum;
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+
+        bytes = new int[N];
+        prices = new int[N];
+
+
+        st = new StringTokenizer(br.readLine());
+        for(int i=0;i<N;i++) bytes[i] = Integer.parseInt(st.nextToken());
+        st = new StringTokenizer(br.readLine());
+        for(int i=0;i<N;i++) {
+            prices[i] = Integer.parseInt(st.nextToken());
+            sum+=prices[i];
+        }
+
+        int[][] dp = new int[N][sum+1];
+        int answer = Integer.MAX_VALUE;
+        for(int i=0;i<N;i++){
+            for(int j=0;j<=sum;j++){
+                if(i==0){//처음 들어왔을떄 바로 걸리는값
+                    if(j>=prices[i]) dp[i][j] = bytes[i];
+                }
+                else{
+                    if(j>=prices[i]){
+                        dp[i][j] = Math.max(dp[i-1][j],dp[i-1][j-prices[i]]+bytes[i]);
+                    }
+                    else dp[i][j] = dp[i-1][j];
+                }
+                //M이상 찾은 경우
+                if(dp[i][j]>=M) answer = Math.min(answer,j);
+            }
+            //
+        }
+
+        System.out.println(answer);
+
+
+    }
+
+
+}
+
