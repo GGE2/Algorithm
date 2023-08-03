@@ -29,10 +29,8 @@ class Main {
                 if(budgets[i]<=mid) sum+=budgets[i];
                 else sum+=mid;
             }
-            if(sum<total) start = mid+1;
-            else if(sum>total) end = mid-1;
-            else break;
-
+            if(sum<=total) start = mid+1;
+            else end = mid-1;
         }
 
         System.out.println(end);
