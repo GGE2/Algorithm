@@ -1,65 +1,42 @@
-
 import java.util.*;
 import java.io.*;
 
+
 class Main {
 
-    static int N,limit;
-    static int[] budgets;
 
-    public static void main(String[] args) throws IOException {
-
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-        int sum=0;
 
-        N = Integer.parseInt(br.readLine());
-        budgets = new int[N];
-        st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(br.readLine());
+        int[] budgets = new int[N];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int start = 0, end =-1;
         for(int i=0;i<N;i++) {
             budgets[i] = Integer.parseInt(st.nextToken());
-            sum+=budgets[i];
+            end = Math.max(end,budgets[i]);
         }
-        limit = Integer.parseInt(br.readLine());
+        int total = Integer.parseInt(br.readLine());
         Arrays.sort(budgets);
-        //예산의 총합이 limit보다 작거나 같은 경우
-        if(sum<=limit) System.out.println(budgets[N-1]);
-        //예산의 총합이 limit보다 큰 경우
-        else{
-            int avg = sum/N;
-            int s = 0;
+
+
+
+
+        while(start<=end){
+            int mid = (start+end) / 2;
+            int sum = 0;
             for(int i=0;i<N;i++){
-                if(budgets[i]<avg) s+=budgets[i];
-                else s+=avg;
+                if(budgets[i]<=mid) sum+=budgets[i];
+                else sum+=mid;
             }
-            if(s<limit){
-                while(s<limit){
-                    s=0;
-                    for(int i=0;i<N;i++){
-                        if(budgets[i]<avg) s+=budgets[i];
-                        else s+=avg;
-                    }
-                    avg++;
-                }
-                System.out.println(avg-1);
-            }else if(s>limit){
-                while(s>limit){
-                    s=0;
-                    for(int i=0;i<N;i++){
-                        if(budgets[i]<avg) s+=budgets[i];
-                        else s+=avg;
-                    }
-                    avg--;
-                }
-                System.out.println(avg+1);
-            }else{
-                System.out.println(avg);
-            }
+            if(sum<total) start = mid+1;
+            else if(sum>total) end = mid-1;
+            else break;
+
         }
 
+        System.out.println(end);
     }
 
+
 }
-
-
-
