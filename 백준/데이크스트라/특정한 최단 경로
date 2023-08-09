@@ -1,0 +1,92 @@
+
+
+import java.io.*;
+import java.util.*;
+
+
+class Main{
+
+    static class Node {
+        int number;
+        int cost;
+
+        public Node(int number, int cost) {
+            this.number = number;
+            this.cost = cost;
+        }
+    }
+    private static final int INF = 200000000;
+
+    static int N,E;
+    static ArrayList<Node>[] graph;
+    static int[] dist;
+    static boolean[] visited;
+    static int v1,v2;
+    public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        E = Integer.parseInt(st.nextToken());
+
+        graph = new ArrayList[N+1];
+        dist = new int[N+1];
+        visited = new boolean[N+1];
+
+        for(int i=0;i<=N;i++)
+            graph[i] = new ArrayList<>();
+
+        for(int i=0;i<E;i++){
+            st = new StringTokenizer(br.readLine());
+            int n1 = Integer.parseInt(st.nextToken());
+            int n2 = Integer.parseInt(st.nextToken());
+            int n3 = Integer.parseInt(st.nextToken());
+            graph[n1].add(new Node(n2,n3));
+            graph[n2].add(new Node(n1,n3));
+        }
+
+        st = new StringTokenizer(br.readLine());
+        v1 = Integer.parseInt(st.nextToken());
+        v2 = Integer.parseInt(st.nextToken());
+
+        int case1 = 0;
+        int case2 = 0;
+        case1+=dijkstra(1,v1);
+        case1+=dijkstra(v1,v2);
+        case1+=dijkstra(v2,N);
+
+        case2+=dijkstra(1,v2);
+        case2+=dijkstra(v2,v1);
+        case2+=dijkstra(v1,N);
+
+        int answer = (case1>=INF&&case2>=INF)?-1:Math.min(case1,case2);
+        bw.write(answer+"\n");
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+    static int dijkstra(int start,int end){
+        PriorityQueue<Node> pq = new PriorityQueue<>(((o1, o2) -> o1.cost-o2.cost));
+        Arrays.fill(dist,INF);
+        Arrays.fill(visited,false);
+        dist[start] = 0;
+        pq.offer(new Node(start,0));
+
+        while(!pq.isEmpty()){
+            Node now = pq.poll();
+            if(!visited[now.number])
+                visited[now.number] = true;
+            for(Node next : graph[now.number]){
+                if(!visited[next.number]&&dist[next.number]>dist[now.number]+next.cost){
+                    dist[next.number] = dist[now.number]+next.cost;
+                    pq.offer(new Node(next.number, dist[next.number]));
+                }
+            }
+
+        }
+        return dist[end];
+    }
+
+
+
+}
