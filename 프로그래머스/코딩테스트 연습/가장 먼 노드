@@ -1,0 +1,62 @@
+import java.util.*;
+import java.io.*;
+
+class Solution {
+    static class Node{
+        int number;
+        int cost;
+        public Node(int number,int cost){
+            this.number = number;
+            this.cost = cost;
+        }
+    }
+    static ArrayList<Node>[] graph;
+    static int[] dist;
+    static boolean[] visited;
+    public int solution(int n, int[][] edge) {
+        int answer = 0;
+        
+        visited = new boolean[n+1];
+        graph = new ArrayList[n+1];
+        dist = new int[n+1];
+        
+        Arrays.fill(dist,Integer.MAX_VALUE);
+        
+        for(int i=0;i<=n;i++)
+            graph[i] = new ArrayList<>();
+        
+        for(int i=0;i<edge.length;i++){
+            graph[edge[i][0]].add(new Node(edge[i][1],0));
+            graph[edge[i][1]].add(new Node(edge[i][0],0));
+        }
+        dijkstra();
+        
+        int max = Integer.MIN_VALUE;
+        for(int i=1;i<=n;i++) max = Math.max(max,dist[i]);
+        for(int i=1;i<=n;i++){
+            if(max==dist[i]) answer++;
+        }
+        
+        return answer;
+    }
+    static void dijkstra(){
+        PriorityQueue<Node> pq = new PriorityQueue<>((o1,o2)->o1.cost-o2.cost);
+        pq.offer(new Node(1,0));
+        dist[1] = 0;
+        
+        while(!pq.isEmpty()){
+            Node now = pq.poll();
+            if(!visited[now.number]) visited[now.number] = true;
+            
+            for(Node next : graph[now.number]){
+                if(!visited[next.number]&&dist[next.number]>dist[now.number]+1){
+                    dist[next.number] = dist[now.number]+1;
+                    pq.offer(new Node(next.number,dist[next.number]));
+                }
+                
+            }
+            
+        }
+        
+    }
+}
