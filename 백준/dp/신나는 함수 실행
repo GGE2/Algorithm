@@ -1,0 +1,40 @@
+
+
+import java.io.*;
+import java.util.*;
+
+
+class Main{
+
+    static int[][][] dp;
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        dp = new int[21][21][21];
+
+
+        while(true){
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            int c = Integer.parseInt(st.nextToken());
+            if(a==-1&&b==-1&&c==-1) break;
+            System.out.println("w("+a+", "+b+", "+c+") = "+w(a,b,c));
+        }
+    }
+    static int w(int n1,int n2,int n3){
+        if(isRange(n1,n2,n3)&&dp[n1][n2][n3]!=0)
+            return dp[n1][n2][n3];
+        if(n1<=0||n2<=0||n3<=0) return 1;
+        if(n1>20||n2>20||n3>20){
+            return dp[20][20][20] = w(20,20,20);
+        }
+        if(n1<n2&&n2<n3)
+            return dp[n1][n2][n3] = w(n1,n2,n3-1)+w(n1,n2-1,n3-1)-w(n1,n2-1,n3);
+        else
+            return dp[n1][n2][n3] = w(n1-1,n2,n3) + w(n1-1,n2-1,n3) + w(n1-1,n2,n3-1) - w(n1-1,n2-1,n3-1);
+    }
+    static boolean isRange(int a,int b,int c){
+        return 0<=a&&0<=b&&0<=c&&a<=20&&b<=20&&c<=20;
+    }
+}
