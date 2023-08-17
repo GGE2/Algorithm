@@ -1,0 +1,42 @@
+import java.util.*;
+import java.io.*;
+
+class Solution {
+    public long solution(int[] sequence) {
+        long[] dp = new long[sequence.length];
+        long answer = 0;
+        int[] arr1 = new int[sequence.length];
+        int[] arr2 = new int[sequence.length];
+        
+        
+
+        for(int i=0;i<sequence.length;i++){
+            if(i%2==0){
+                arr1[i] = sequence[i]*-1;
+                arr2[i] = sequence[i];
+            }
+            else{
+                arr1[i] = sequence[i];
+                arr2[i] = sequence[i]*-1;
+            }
+        }
+    
+        dp[0] = arr1[0];
+        answer = arr1[0];
+        
+        for(int i=1;i<sequence.length;i++){
+            dp[i] = Math.max(dp[i-1]+arr1[i],arr1[i]);
+            answer = Math.max(answer,dp[i]);
+        }
+        
+        
+        dp[0] = arr2[0];
+        
+        for(int i=1;i<sequence.length;i++){
+            dp[i] = Math.max(dp[i-1]+arr2[i],arr2[i]);
+            answer = Math.max(answer,dp[i]);
+        }
+        
+        return answer;
+    }
+}
