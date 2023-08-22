@@ -1,0 +1,15 @@
+import java.io.*;
+import java.util.*;
+
+class Main {
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		double W = Integer.parseInt(st.nextToken());
+		double R = Integer.parseInt(st.nextToken());
+		
+		int res = (int)Math.floor(W*(1+R/30));
+		System.out.println(res);
+	}
+}
