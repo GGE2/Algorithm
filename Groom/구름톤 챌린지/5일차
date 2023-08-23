@@ -1,0 +1,43 @@
+import java.io.*;
+import java.util.*;
+
+class Main {
+	static class Num implements Comparable<Num>{
+		int num;
+		int binaryCount;
+		
+		public Num(int num,int binaryCount){
+			this.num = num;
+			this.binaryCount = binaryCount;
+		}
+		
+		public int compareTo(Num o){
+			if(this.binaryCount==o.binaryCount)
+				return -(this.num-o.num);
+			else
+				return -(this.binaryCount-o.binaryCount);
+		}
+	}
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int N = Integer.parseInt(st.nextToken());
+		int M = Integer.parseInt(st.nextToken());
+		
+		Num[] nums = new Num[N];
+		
+		st = new StringTokenizer(br.readLine());
+		
+		for(int i=0;i<N;i++){
+			int n = Integer.parseInt(st.nextToken());
+			String bin = Integer.toBinaryString(n);
+			int count =0;
+			for(int j=0;j<bin.length();j++)
+				if(bin.charAt(j)=='1') count++;
+			nums[i] = new Num(n,count);
+		}
+		Arrays.sort(nums);
+		
+		System.out.println(nums[M-1].num);
+	}
+}
