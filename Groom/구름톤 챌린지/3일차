@@ -1,0 +1,39 @@
+import java.io.*;
+import java.util.*;
+class Main {
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N = Integer.parseInt(br.readLine());
+		int sum = 0;
+		for(int i=0;i<N;i++){
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			int a = Integer.parseInt(st.nextToken());
+			char ch = st.nextToken().charAt(0);
+			int b = Integer.parseInt(st.nextToken());
+			sum+=calc(a,ch,b);
+		}
+		System.out.println(sum);
+	}
+	static int calc(int a,char ch,int b){
+		
+			int res=0;
+			switch(ch){
+				case '+' : {
+					res = a+b;
+					break;
+				}
+				case '-':{
+					res = a-b;
+					break;
+				}
+				case '*':{
+					res = a*b;
+					break;
+				}
+				case '/':{
+					res = (int)a/b;
+				}
+			}
+		return res;
+	}
+}
