@@ -1,0 +1,53 @@
+import java.util.*;
+import java.io.*;
+
+class Solution {
+    static int idx=2;
+    static int[] dx = {-1,0,1,0};
+    static int[] dy = {0,1,0,-1};
+    static int count=0;
+    static ArrayList<Integer> list = new ArrayList<>();
+    static boolean[] visited;
+    public int solution(int[][] land) {
+        int answer = 0;
+        int[][] m = land;
+        for(int i=0;i<land.length;i++){
+            for(int j=0;j<land[0].length;j++){
+                if(m[i][j]==1){
+                    dfs(i,j,m);
+                    list.add(count);
+                    idx++;
+                    count = 0;
+                }
+            }
+        }
+        visited = new boolean[list.size()];
+        if(list.size()==0) return 0;
+        for(int i=0;i<m[0].length;i++){
+            int calc = 0;
+            for(int j=0;j<m.length;j++){
+                if(m[j][i]!=0&&!visited[m[j][i]-2]){
+                    int now = m[j][i]-2;
+                    calc+=list.get(now);                
+                    visited[now] = true;
+                }
+            }
+            answer = Math.max(answer,calc);
+            visited = new boolean[list.size()];
+        }
+        
+        return answer;
+    }
+    static void dfs(int x,int y,int[][] map){
+        map[x][y] = idx;
+        count++;
+        for(int i=0;i<4;i++){
+            int nx = x+dx[i];
+            int ny = y+dy[i];
+            if(nx>=0&&ny>=0&&nx<map.length&&ny<map[0].length&&map[nx][ny]==1){
+                dfs(nx,ny,map);
+            }
+        }
+    }
+
+}
