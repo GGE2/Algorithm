@@ -1,0 +1,56 @@
+import java.util.*;
+import java.io.*;
+
+
+class Solution {
+    static class Node{
+        int index;
+        int cost;
+        public Node(int index,int cost){
+            this.index = index;
+            this.cost = cost;
+        }
+    }
+    static final int INF = 5000001;
+    static ArrayList<Node>[] graph;
+    public int[] solution(int n, int[][] roads, int[] sources, int destination) {
+        int[] answer = new int[sources.length];
+        int[] dist = new int[n+1];
+        graph = new ArrayList[n+1];
+        
+        for(int i=0;i<=n;i++) graph[i] = new ArrayList<>();
+        for(int i=0;i<roads.length;i++){
+            graph[roads[i][0]].add(new Node(roads[i][1],1));
+            graph[roads[i][1]].add(new Node(roads[i][0],1));
+        }
+        for(int i=0;i<sources.length;i++){
+            int res = dijkstra(n,sources[i],destination);
+            if(res==INF) answer[i] = -1;
+            else answer[i] = res;
+        }
+        return answer;
+    }
+    static int dijkstra(int n,int start,int destination){
+        PriorityQueue<Node> pq = new PriorityQueue<>((o1,o2)->o1.cost-o2.cost);
+        boolean[] visited = new boolean[n+1];
+        int[] dist = new int[n+1];
+        for(int i=0;i<=n;i++) dist[i] = INF;
+        pq.offer(new Node(start,1));
+        dist[start] = 0;
+        if(start==destination) return 0;
+        while(!pq.isEmpty()){
+            Node now = pq.poll();
+            if(visited[now.index]) continue;
+            visited[now.index] = true;
+            for(Node next : graph[now.index]){
+                int cost = dist[now.index] + next.cost;
+                if(cost<dist[next.index]){
+                    dist[next.index] = cost;
+                    pq.offer(new Node(next.index,cost));
+                }
+                if(next.index==destination) return dist[destination];
+            }
+        }
+        return dist[destination];
+    }
+}
