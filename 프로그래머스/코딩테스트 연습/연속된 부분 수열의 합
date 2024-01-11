@@ -1,0 +1,37 @@
+
+import java.util.*;
+import java.io.*;
+
+class Solution {
+    public int[] solution(int[] sequence, int k) {
+        int[] answer = new int[2];
+        if(sequence[0]==k){
+            answer[0]=0;
+            answer[1]=0;
+            return answer;
+        } 
+        int left = 0;
+        int right =1;
+        int sum = sequence[0];        
+        answer[0] = 0;
+        answer[1] = sequence.length-1;
+        while(left<right){
+            if(sum==k){
+                if(right-left-1<answer[1]-answer[0]){
+                    answer[1] = right-1;
+                    answer[0] = left;     
+                }
+                sum-=sequence[left++];
+            }else if(sum>k){
+                sum-=sequence[left++];
+            }else if(right<sequence.length){
+                sum+=sequence[right++];
+            }else{
+                break;
+            }   
+        }
+        
+        
+        return answer;
+    }
+}
