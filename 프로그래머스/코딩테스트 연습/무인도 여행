@@ -1,0 +1,48 @@
+import java.util.*;
+import java.io.*;
+
+class Solution {
+    static boolean[][] visited;
+    static int[] dx = {-1,0,1,0};
+    static int[] dy = {0,1,0,-1};
+    static int count=0;
+    public int[] solution(String[] maps) {
+        int[] answer = {};
+        ArrayList<Integer> list = new ArrayList<>();
+        visited = new boolean[maps.length][maps[0].length()];
+        for(int i=0;i<maps.length;i++){
+            for(int j=0;j<maps[0].length();j++){
+                if(maps[i].charAt(j)!='X'&&!visited[i][j]){
+                    dfs(i,j,maps);
+                    if(count!=0) list.add(count);
+                    count=0;
+                }
+            }
+        }
+        if(list.size()==0){
+            answer = new int[1];
+            answer[0] = -1;
+        }else{
+            answer = new int[list.size()];
+            Collections.sort(list);
+            for(int i=0;i<list.size();i++)
+                answer[i] = list.get(i);
+        }
+        return answer;
+    }
+    static void dfs(int x,int y,String[] maps){
+        visited[x][y] = true;
+        count=count + (maps[x].charAt(y)-'0');
+        
+        for(int i=0;i<4;i++){
+            int nx = x+dx[i];
+            int ny = y+dy[i];
+            if(nx>=0&&ny>=0&&nx<maps.length&&ny<maps[0].length()&&
+               !visited[nx][ny]&&maps[nx].charAt(ny)!='X'){
+                dfs(nx,ny,maps);
+            }
+        }
+        return ;
+    }
+    
+}
