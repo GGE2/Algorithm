@@ -1,0 +1,73 @@
+import java.io.*;
+import java.util.*;
+
+class Solution {
+    static class Miro{
+        int x;
+        int y;
+        int count;
+        public Miro(int x,int y,int count){
+            this.x = x;
+            this.y = y;
+            this.count = count;
+        }
+    }
+    
+    static int[] dx={-1,0,1,0};
+    static int[] dy={0,1,0,-1};
+    static char[][] MAP;
+    
+    public int solution(String[] maps) {
+        int answer = 0;        
+        int sx=0,sy=0;
+        int ex=0,ey=0;
+        int lx=0,ly=0;
+        MAP = new char[maps.length][maps[0].length()];
+        for(int i=0;i<MAP.length;i++){
+            for(int j=0;j<MAP[0].length;j++){
+                MAP[i][j] = maps[i].charAt(j);
+                if(MAP[i][j]=='S'){
+                    sx = i;
+                    sy = j;
+                }
+                else if(MAP[i][j]=='L'){
+                    lx = i;
+                    ly = j;
+                }
+                else if(MAP[i][j]=='E'){
+                    ex = i;
+                    ey = j;
+                }
+            }
+        }
+        int lever = bfs(sx,sy,lx,ly);
+        if(lever==-1) return -1;
+        int exit = bfs(lx,ly,ex,ey);
+        if(exit==-1) return -1;
+        return lever+exit;
+    }
+    static int bfs(int startX,int startY,int endX,int endY){
+        Queue<Miro> q = new ArrayDeque<Miro>();
+        boolean[][] visited = new boolean[MAP.length][MAP[0].length];
+        q.offer(new Miro(startX,startY,0));
+        while(!q.isEmpty()){
+            Miro now = q.poll();
+            if(now.x==endX&&now.y==endY) {            
+                return now.count;
+            }
+            for(int i=0;i<4;i++){
+                int nx = now.x+dx[i];
+                int ny = now.y+dy[i];
+                if(nx>=0&&ny>=0&&nx<MAP.length&&ny<MAP[0].length&&
+                   !visited[nx][ny]&&MAP[nx][ny]!='X'){
+                    q.offer(new Miro(nx,ny,now.count+1));
+                    visited[nx][ny] = true;
+                }
+                
+            }
+            
+        }
+        return -1;
+    }
+    
+}
