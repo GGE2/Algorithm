@@ -1,0 +1,63 @@
+import java.util.*;
+import java.io.*;
+
+class Solution {
+    static class Room implements Comparable<Room>{
+        int start;
+        int end;
+        public Room(int start,int end){
+            this.start = start;
+            this.end = end;
+        }
+        public int compareTo(Room o){
+            return this.start-o.start;
+        }
+    }
+    public int solution(String[][] book_time) {
+        Room[] rooms = new Room[book_time.length];
+        int answer = 0;
+        
+        for(int i=0;i<book_time.length;i++){
+            int start = 0;
+            int end = 10;
+            for(int j=0;j<2;j++){
+                if(j==0) start+=parseTime(book_time[i][j]);
+                else end+=parseTime(book_time[i][j]);
+        }
+            rooms[i] = new Room(start,end);
+    }
+        Arrays.sort(rooms);
+        
+        //for(Room r : rooms)
+            //System.out.println(r.start+" "+r.end);
+        ArrayList<Room> rs = new ArrayList<>();
+        for(int i=0;i<rooms.length;i++){
+            if(rs.size()==0) {
+                rs.add(rooms[i]);
+                answer++;
+            }
+            else{
+                boolean ck = false;
+                for(int j=0;j<rs.size();j++){
+                    if(rs.get(j).end<=rooms[i].start){
+                        ck = true;
+                        rs.set(j,rooms[i]);
+                        break;
+                    }
+                }
+                if(!ck){
+                    rs.add(rooms[i]);
+                    answer++;
+                }
+            }
+        }
+        
+        return answer;
+}
+    static int parseTime(String time){
+        String[] str = time.split(":");
+        int hour = Integer.parseInt(str[0]);
+        int minute = Integer.parseInt(str[1]);
+        return hour*60 + minute;
+    }
+}
