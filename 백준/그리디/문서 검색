@@ -1,0 +1,24 @@
+
+
+import java.io.*;
+import java.util.*;
+
+
+class Main{
+
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        //StringTokenizer st = new StringTokenizer(br.readLine());
+        String str = br.readLine();
+        String pattern = br.readLine();
+        int answer = 0;
+        while(str.indexOf(pattern)!=-1){
+            str = str.substring(str.indexOf(pattern)+pattern.length(),str.length());
+            answer++;
+        }
+        System.out.println(answer);
+    }
+
+
+}
