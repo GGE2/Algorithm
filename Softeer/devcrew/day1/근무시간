@@ -1,0 +1,26 @@
+import java.io.*;
+import java.util.*;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalTime;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        long answer = 0;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        
+        for(int i=0;i<5;i++){
+            st = new StringTokenizer(br.readLine());
+            LocalTime time1 = LocalTime.parse(st.nextToken(),formatter);
+            LocalTime time2 = LocalTime.parse(st.nextToken(),formatter);
+            answer+=differenceTime(time1,time2);
+        }
+        System.out.println(answer);
+    }
+
+    static long differenceTime(LocalTime time1, LocalTime time2){
+        return java.time.Duration.between(time1,time2).toMinutes();
+    }
+}
