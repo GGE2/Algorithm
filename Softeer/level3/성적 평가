@@ -1,0 +1,79 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    static class Person implements Comparable<Person>{
+        int score;
+        int count;
+        public Person(int score,int count){
+            this.score = score;
+            this.count = count;
+        }
+        public int compareTo(Person o1){
+            return o1.score-this.score;
+        }
+    }
+
+    public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        StringBuilder sb = new StringBuilder();
+        int N = Integer.parseInt(br.readLine());
+        int[] scores = new int[N];
+        int[] total_scores = new int[N];
+
+        
+        for(int i=0;i<3;i++){    
+            st = new StringTokenizer(br.readLine());
+            for(int j=0;j<N;j++){
+                scores[j] = Integer.parseInt(st.nextToken());
+                total_scores[j]+=scores[j];
+            }
+            int[] res = get_score(scores);
+            for(int j=0;j<res.length;j++) 
+                if(j!=res.length-1) sb.append(res[j]).append(" ");
+                else sb.append(res[j]);
+            sb.append("\n");
+        }
+        int[] result = get_score(total_scores);
+        for(int i=0;i<result.length;i++) {
+            if(i!=result.length-1) sb.append(result[i]).append(" ");
+            else sb.append(result[i]);
+        }
+        System.out.println(sb.toString());
+        
+    }
+    static int[] get_score(int[] score){
+         HashMap<Integer,Integer> input_map = new HashMap<>();
+         HashMap<Integer,Integer> result_map = new HashMap<>();
+         PriorityQueue<Person> pq = new PriorityQueue<>();     
+         int[] result_score = new int[score.length];
+        for(int i=0;i<score.length;i++){
+             if(input_map.containsKey(score[i])){ //이미 들어온 점수
+                 input_map.put(score[i],input_map.get(score[i])+1);
+             }else{ //새로 들어온 점수
+                 input_map.put(score[i],1);
+             }                 
+        }
+        
+        input_map.forEach((strKey, strValue)->{
+            pq.offer(new Person(strKey,strValue));
+        });
+        int high_count = 1;//자기 보다 높은 사람들 세기
+        while(!pq.isEmpty()){
+            Person now = pq.poll();
+            result_map.put(now.score,high_count);
+            high_count+=now.count;
+        }
+        for(int i=0;i<result_score.length;i++){
+            result_score[i] = result_map.get(score[i]);
+        }
+        return result_score;
+    }
+}
+
+// 90 90 90 80 80 70 1 ,1 , 1 , 4, 4, 6
+//Map에다가 저장 후 정렬
+//PQ
+//새로운 Map Value값으로 저장
