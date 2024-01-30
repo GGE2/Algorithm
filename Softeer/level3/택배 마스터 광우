@@ -1,0 +1,59 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    static int N,M,K,answer;
+    static int[] rails;
+    public static void main(String[] args) throws Exception{
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        answer = Integer.MAX_VALUE;
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(st.nextToken());
+        rails = new int[N];
+        
+        st = new StringTokenizer(br.readLine());
+        for(int i=0;i<N;i++){
+            rails[i] = Integer.parseInt(st.nextToken());
+        }
+        permutation(new int[N],new boolean[N],0,N);
+        System.out.println(answer);
+    }
+    static void permutation(int[] arr,boolean[] v,int n,int r){
+        if(n==r){
+            calcu(arr);
+            return ;
+        }
+        for(int i=0;i<r;i++){
+            if(v[i]) continue;
+            v[i] = true;
+            arr[n] = i;
+            permutation(arr,v,n+1,r);
+            v[i] = false;
+        }
+    }
+    static void calcu(int[] arr){
+        int k = 0;
+        int idx = 0;
+        int total = 0;
+        int sum = 0;
+        while(k<K){
+            if(idx>=N) idx = 0;
+            if(total>=answer) return ;
+            sum+=rails[arr[idx]];
+            if(sum>M){ //무게 초과
+                sum-=rails[arr[idx]];
+                total+=sum;
+                sum = 0;
+                k++;
+            }else{ //무게 초과 아닌경우
+                idx++;
+            }
+        }
+        answer = Math.min(answer,total);
+        return ;
+    }
+}
