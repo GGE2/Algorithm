@@ -1,0 +1,80 @@
+import java.util.*;
+import java.io.*;
+
+class Solution {
+    static class Subject implements Comparable<Subject>{
+        String project;
+        int start;
+        int during;
+        public Subject(String project, int start,int during){
+            this.project = project;
+            this.start = start;
+            this.during = during;
+        }
+        public int compareTo(Subject s1){
+            return this.start-s1.start;
+        }
+    }
+    static class SpareSubject{
+        String project;
+        int time;
+        public SpareSubject(String project,int time){
+            this.project = project;
+            this.time = time;
+        }
+    }
+    public String[] solution(String[][] plans) {
+        String[] answer = new String[plans.length];
+        ArrayList<String> list = new ArrayList<>();
+        Subject[] sjs = new Subject[plans.length];
+        Stack<SpareSubject> stack = new Stack<>();
+        
+        for(int i=0;i<plans.length;i++){
+            String[] strTime = plans[i][1].split(":");
+            int startTime = Integer.parseInt(strTime[0])*60 + Integer.parseInt(strTime[1]);
+            int during = Integer.parseInt(plans[i][2]);
+            sjs[i] = new Subject(plans[i][0],startTime,during);
+        }
+        //시작 순서로 정렬
+        Arrays.sort(sjs);
+        
+        for(int i=0;i<sjs.length-1;i++){
+            //한번에 끝낼수 있는 경우
+            if(sjs[i].start+sjs[i].during<=sjs[i+1].start){
+                list.add(sjs[i].project);
+                //못다한 과제 할 수 있는지 확인
+                int st = sjs[i+1].start-sjs[i].start-sjs[i].during;
+                //남은 과제가 없으면 할필요 x
+                if(stack.isEmpty()) continue;
+                else{
+                    System.out.print("now = "+sjs[i].project+" ");
+                    while(!stack.isEmpty()){
+                        System.out.println(stack.peek().project+stack.peek().time+" "+st);
+                        if(stack.peek().time<=st){
+                            SpareSubject now = stack.pop();
+                            list.add(now.project);
+                            st-=now.time;
+                        }else{
+                            SpareSubject now = stack.pop();
+                            stack.push(new SpareSubject(now.project,now.time-st));
+                            break;
+                        }
+                    }                    
+                }
+                
+                
+            }else{ //끝내지 못하면 스택으로 들어감
+                int spare = sjs[i].start+sjs[i].during-sjs[i+1].start;
+                stack.push(new SpareSubject(sjs[i].project,spare));
+            }
+        }
+        list.add(sjs[sjs.length-1].project);
+        while(!stack.isEmpty()){
+            list.add(stack.pop().project);
+        }
+        for(int i=0;i<answer.length;i++){
+            answer[i] = list.get(i);
+        }
+        return answer;
+    }
+}
