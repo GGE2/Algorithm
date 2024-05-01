@@ -1,0 +1,37 @@
+import java.util.*;
+import java.io.*;
+
+class Solution {
+    static int max = Integer.MIN_VALUE;
+    public int solution(int k, int[][] dungeons) {
+        int answer = -1;
+        solve(dungeons,new int[dungeons.length],new boolean[dungeons.length],0,k);
+        answer = (max==Integer.MIN_VALUE)?0:max;
+        
+        return answer;
+    }
+    static void solve(int[][] ds,int[] pickes,boolean[] v,int cnt,int piro){
+        if(cnt==ds.length){
+            int count = 0;
+            int idx = 0;
+            //System.out.println(Arrays.toString(pickes));
+            while(idx<pickes.length&&piro>0){
+                if(piro>=ds[pickes[idx]][0]){
+                    piro-=ds[pickes[idx]][1];
+                    count++;
+                }                
+                idx++;
+            }
+            max = Math.max(max,count);
+            return ;
+        }
+        for(int i=0;i<ds.length;i++){
+            if(v[i]) continue;
+            v[i] = true;
+            pickes[cnt] = i;
+            solve(ds,pickes,v,cnt+1,piro);
+            v[i] = false;
+            
+        }
+    }
+}
