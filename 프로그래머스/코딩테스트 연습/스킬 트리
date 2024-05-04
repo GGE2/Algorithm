@@ -1,0 +1,28 @@
+import java.util.*;
+import java.io.*;
+
+class Solution {
+    public int solution(String skill, String[] skill_trees) {
+        int answer = 0;
+        
+        for(int i=0;i<skill_trees.length;i++){
+            ArrayList<Integer> list = new ArrayList<>();
+            for(int j=0;j<skill_trees[i].length();j++){
+                int idx = skill.indexOf(skill_trees[i].charAt(j));
+                if(idx==-1) continue;
+                list.add(idx);
+            }
+            int idx = 0;
+            boolean flag = true;
+            for(int j=0;j<list.size();j++){
+                if(idx++!=list.get(j)){
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag) answer++;
+        }
+        
+        return answer;
+    }
+}
