@@ -1,0 +1,11 @@
+SELECT E3.ID
+FROM ECOLI_DATA E3
+WHERE PARENT_ID IN (SELECT E2.ID
+                    FROM ECOLI_DATA E2
+                    WHERE E2.PARENT_ID IN(
+                        SELECT E1.ID 
+                        FROM ECOLI_DATA E1
+                        WHERE E1.PARENT_ID IS NULL
+                        )
+                   )
+ORDER BY E3.ID;
